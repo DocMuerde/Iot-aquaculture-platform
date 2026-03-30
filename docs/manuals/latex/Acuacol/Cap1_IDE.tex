@@ -1,0 +1,89 @@
+\chapter{Configurando el IDE de Arduino.}
+
+%\begin{figure}[htbp!]
+%\centering{\psfig{file=Figuras/circuito.png,width=14cm,angle=0}}
+%\caption{Circuito de la competici\'{o}n}
+%\end{figure}
+
+
+%\begin{tcolorbox}
+%[colback=red!5!white,colframe=red!75!black,fonttitle=\bfseries,title=NO OLVIDAR:]
+%Instalar el driver CH340\footnote{Disponible en EV} para poder usar el Arduino no original e instalar la librer\'{\i}a \emph{TimerOne}.
+%\end{tcolorbox}
+
+\section{Introducción}
+
+Para ser capaces de instalar futuras versiones del Software lo primero que tenemos que hacer es configurar de forma correcta el IDE de Arduino para que pueda trabajar con el micro que se ha usado para el equipo. 
+\begin{itemize}
+\item El IDE de Arduino es el programa que se usa para programar los micros. Se ha usado este programa por su simplicidad.
+\item La placa que se usa es una Fire-Beetle, que a su vez se basa en un micro esp32. Este micro tiene capacidad de comunicación Wifi y Bluetooth, y potencia suficiente para ejecutar todas las funcionalidades de este equipo.
+\end{itemize}
+
+\section{Preparando el IDE de Arduino para trabajar con el esp32}
+
+\begin{enumerate}
+\item Abrimos el IDE de Arduino.
+\item En la pestaña que pone Arduino (arriba a la izquierda) seleccionamos preferencias.
+\item Hay un campo para meter URL para buscar nuevas placas, En ese campo copiamos lo siguiente:
+\begin{verbatim}
+https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages
+/package_esp32_index.json
+\end{verbatim}
+\item Vamos ahora a: herramientas $\rightarrow$ placas $\rightarrow$ gestor de tarjetas. En el buscador ponemos $esp32$
+\item instalamos:\emph{esp32 by Espressif Systems}
+\item Ya podemos seleccionar la placa \textbf{FireBeetle-ESP32} en el menú de placas. Hay muchísimas placas que montan el esp32\footnote{En el comienzo del programa vienen estas instrucciones.}.
+\end{enumerate}
+
+\section{Instalar las librerías}
+
+Para instalar las librerías proceda de la siguiente manera:
+
+\begin{enumerate}
+\item Una vez instalada la última versión del IDE y haber configurado el repositorio de placas de Espressiv (esp32). Abrimos la versión del programa proporcionada que ha de llamarse \emph{Acuacol\_definitivoVX.ino} (donde X es un número). Habrá muchos más ficheros \emph{.ino} pero este es el que gestiona todos los demás (debe coincidir con el nombre de la carpeta que contiene todos los ficheros .ino).
+\item En las pestañas de arriba de la ventana seleccionamos Sketch $\rightarrow$ Include Library $\rightarrow$ Manage Libraries. Se abrirá a la izquierda un menú para instalar librerías.
+\item Arriba a la izquierda sale una ventana de búsqueda, vamos buscando las librerías y las instalamos. No instalaremos \emph{wire}, porque ya está instalada.
+\end{enumerate}
+
+\section{Librerías a instalar para ejecutar el programa:}
+Son las librerías que vienen en los \emph{include} al comienzo del programa.
+\begin{enumerate}
+\item \emph{Wire}. Debe estar ya instalada.
+\item \emph{RTClib} Librería para el manejo del reloj RTC. De Adafruit. Instalar con dependencias.
+\item \emph{OneWire} Librería para los sensores DS18B20. De Jim Studt...
+\item \emph{DallasTemperature} Librería para los sensores DS18B20. De Miles Burton V3.9.0. Instalar con dependencias.
+\item \emph{SPI} Librería para la lectura de la tarjeta microSD. Ya instalada
+\item \emph{SD} Librería para la lectura de la tarjeta microSD. Se instala cuando instalas el esp32.
+\item \emph{DHT sensor library} Librería para sensores ambientales DHT22. De Adrafruit. Instalar con dependencias.
+\item \emph{WiFi} Librería para comunicación WIFI. Instalada.
+\item \emph{time} Librería para el manejo del tiempo (seguramente la instala RTCLib). 
+\item \emph{PubSubClient} Librería para comunicación MQTT. De Nick O'Leary. 
+\item \emph{ArduinoJson} Librería para mandar y recibir datos Json. De Benoit Blanchon
+\item \emph{TCA9555} Librería para trabajar con el modulo de expasión de entradas y salidas digitales I2C TCA9555
+\item \emph{Adafruit\_ADS1X15} Librería para trabajar con el convertidor de entradas analógicas ADC115. Instalar con dependencias.
+\item \emph{LiquidCrystal\_I2C} Librería para el manejo de la pantalla lcd I2C. De Frank Brabander. Da un warning al compilar, avisa que la librería no esta diseñada para la arquitectura del Fire-Beetle. Aún así funciona.
+\end{enumerate}
+
+Solo nos queda comprobar que todas las librerías están bien instaladas dándole al botón de compilar. La primera vez tarda mucho, luego ya va más rápido. Si todo sale de forma correcta puede cargar el programa en el Fire-Beetle.
+
+\begin{tcolorbox}
+[colback=red!5!white,colframe=red!75!black,fonttitle=\bfseries,title=DFRobot FireBeetle-esp32 V4.0 ]
+Para probar el programa en la placa DFRobot FireBettle ESP32. En el menú herramientas:
+\begin{enumerate}
+\item Seleccionamos FireBeetle-esp32, en el menú de placas
+\item Upload speed: 115200 (Cambiar por defecto viene 921600)
+\item Seleccionamos el puerto. Debe ser el puerto que aparezca nuevo al conectar Fire Beetle.
+\item Le damos a la flecha que hay arriba a la izquierda, para cargar el programa.
+\end{enumerate}
+\end{tcolorbox}
+
+Una vez cargado el sistema se iniciará automáticamente.
+
+
+
+
+
+
+
+
+
+

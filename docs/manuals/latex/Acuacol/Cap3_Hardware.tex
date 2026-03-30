@@ -1,0 +1,108 @@
+\chapter{Hardware:}
+
+\section{Modulo de reloj}
+
+El módulo de reloj tiene su propia batería y almacena la hora aunque haya un corte de corriente.
+
+Pero hay que indicarle la hora la primera vez 
+
+Nota: Añadir al programa que actualice la hora cuando arranque por internet. Si no hay internet hay que hacerlo a mano como se indica a continuación.
+
+Se dispone que un programa que copia la hora del PC en el Fire Beetle Esp32 (microcontrolador del sistema). Sin embargo, la hora q hay que cargar en el micro es la hora con desfase horario 0. Por lo que hay que cambiar la hora del PC, en primer lugar y luego ejecutar el programa:
+\begin{verbatim}
+Calc_RTC.ino             
+\end{verbatim}
+Que se adjunta con en la carpeta de programas. A continuación abrimos el programa: 
+\begin{verbatim}
+Acuacol_definitivo_V2.ino             
+\end{verbatim}
+Al principio de la función \emph{setup()}, podemos encontrar el siguiente código:
+\begin{verbatim}
+  ZHSPA.ppio.dia = 28;
+  ZHSPA.ppio.mes = 3;
+  ZHSPA.ppio.GMTmas = 1;
+  ZHSPA.fin.dia = 28;
+  ZHSPA.fin.mes = 10;
+  ZHSPA.fin.GMTmas = 2;
+
+  ZHCOL.ppio.dia = 28;
+  ZHCOL.ppio.mes = 3;
+  ZHCOL.ppio.GMTmas = -5;
+  ZHCOL.fin.dia = 28;
+  ZHCOL.fin.mes = 10;
+  ZHCOL.fin.GMTmas = -5;
+  ZH = ZHSPA;        
+\end{verbatim}
+ZHSPA y ZHCOL son dos estructuras usadas para ejecutar el cambio horario. ZHSPA es la configuración española, del 28 de marzo al 28 de octubre estamos en GMT+2 mientras que resto es GMT+1. ZHCOL es el correspondiente a Colombia. Siempre es GMT-5. La última línea copia en ZH la configuración horaria deseada. En el caso de Colombia habría que cambiar esa línea por 
+\begin{verbatim}
+ZH = ZHCOL;        
+\end{verbatim}
+
+Cargamos el programa en el FureBeetle ESP32 y una vez acabada la secuencia de arranque, mostrará la hora y fecha correcta por la pantalla.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Sensores de temperatura del agua DF18B20}
+
+El DS18B20 es un sensor digital de temperatura que utiliza el protocolo 1-Wire para comunicarse, este protocolo necesita solo un pin de datos para comunicarse y permite conectar más de un sensor en el mismo bus.
+
+El sensor DS18B20 es fabricado por Maxim Integrated, el encapsulado de fabrica es tipo TO-92 similar al empleado en transistores pequeños. La presentación comercial más utilizada por conveniencia y robustez es la del sensor dentro de un tubo de acero inoxidable resistente al agua, con el que se trabajará en este proyecto.
+
+En este proyecto se usan dos sensores conectados al mismo pin: 
+\begin{verbatim}
+33 #define onewire_pin 16               
+\end{verbatim}
+Si se usa un solo DS18B20 se puede trabajar sin hacer ninguna identificación de los mismos y puede omitir el resto de este punto. Pero si se usase más de uno (en ppio la placa viene preparada para dos pero se podrían usar muchos más puesto que todos van conectados al mismo bus), se necesitaría averiguar la dirección de cada sensor para poder identificarlo. Para ello ejecutaríamos el programa:
+
+\lstinputlisting[language=Octave]{codigos/EncuentraDS18B20.ino}
+
+Que en nuestro caso nos devuelve:
+\begin{verbatim}
+Obteniendo direcciones:
+Address =  0x28, 0xD2, 0x89, 0x78, 0x54, 0x22, 0x9, 0x11
+Address =  0x28, 0xFF, 0x64, 0x1F, 0x42, 0x76, 0x7A, 0x0
+\end{verbatim}
+
+Es muy importante copiar estas direcciones en el programa definitivo, en las líneas 102 y 103. Antes tenemos que completar con ceros los identificadores de una cifra\footnote{El séptimo identificador del sensor 1 y el octavo del sensor 2.}.
+
+\begin{verbatim}
+102 uint8_t sensor1[8] = {0x28, 0xD2, 0x89, 0x78, 0x54, 0x22, 0x09, 0x11};
+103 uint8_t sensor2[8] = {0x28, 0xFF, 0x64, 0x1F, 0x42, 0x76, 0x7A, 0x00};
+\end{verbatim}
+
+El sensor 1 debe estar con el sensor de PH, O2 y conductividad pues es el que se utilizará para la compensación por temperatura. Para saber cual es cual, se puede ejecutar el programa anterior pero con solo un sensor conectado, y así averiguaremos su dirección. 
+
+Para probar los sensores podemos ejecutar el siguiente programa:
+
+\lstinputlisting[language=Octave]{codigos/MideDS18B20.ino}
+
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Sensores de temperatura y humedad del aire DTH22}
+
+El sensor DHT22 es un sensor digital de Temperatura y Humedad, es fácil de implementar con cualquier microcontrolador. Utiliza un sensor capacitivo de humedad y un termistor para medir el aire circundante y solo un pin para la lectura de los datos. Tal vez la desventaja de estos es la velocidad de las lecturas y  el tiempo que hay que esperar para tomar nuevas lecturas (nueva lectura después de 2 segundos), pero esto no es tan importante puesto que la Temperatura y Humedad son variables que no cambian muy rápido en el tiempo.
+
+A diferencia de los sensores anteriores, cada sensor lleva su propio pin de comunicaciones por lo que podemos saber cual es cual desde un principio. Uno debe ir montado dentro, donde esté el sistema acuapónico (el número 1) y el otro en el exterior, protegido de los agentes ambientales.
+\begin{verbatim}
+#define dht22_pin1 26 // Pin sensor DHT22 numero 1 (digital) 
+#define dht22_pin2 27 // Pin sensor DHT22 numero 2 (digital) 
+\end{verbatim}
+
+La librería necesaria para usar estos sensores es:
+\begin{verbatim}
+#include "DHT.h" // Librería para sensores ambientales DHT22 [Adafruit]
+\end{verbatim}
+
+Para probar que los sensores funcionan de forma correcta ejecutamos el siguiente código:
+
+\lstinputlisting[language=Octave]{codigos/MideDTH22.ino}
+
+Este programa es una variación del ejemplo que se puede encontrar en los ejemplos del IDE de Arduino:
+$$File \rightarrow examples \rightarrow DTH\;Sensor\;Library \rightarrow DTH\;Tester $$
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Modulo SD}
+
+\subsection{Pantalla LCD}

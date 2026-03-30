@@ -1,0 +1,188 @@
+\documentclass[12pt,a4paper,notitlepage]{tesis_dlm}
+
+\usepackage{bm}
+\usepackage{epsfig}
+\usepackage{color}
+\usepackage{xcolor}
+%\usepackage{babel}
+\usepackage[spanish]{babel}  
+%\usepackage[spanish, activeacute]{babel} %Definir idioma español
+%\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{vmargin}
+\usepackage{subfig}
+\usepackage{tcolorbox}
+\usepackage{footnote}
+\usepackage{url}
+\usepackage[dcucite]{harvard}
+\usepackage{matlab-prettifier}
+\newcommand{\vs}{\vspace{0.5cm}}
+
+\setpapersize{A4}
+\setmargins{2.5cm}       % margen izquierdo
+{1.5cm}                        % margen superior
+{16.5cm}                      % anchura del texto
+{23.42cm}                    % altura del texto
+{10pt}                           % altura de los encabezados
+{1cm}                           % espacio entre el texto y los encabezados
+{0pt}                             % altura del pie de p\'{a}gina
+{2cm}                           % espacio entre el texto y el pie de p\'{a}gina
+
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.47,0.47,0.33}
+\definecolor{myorange}{rgb}{0.8,0.4,0}
+\definecolor{mywhite}{rgb}{0.98,0.98,0.98}
+\definecolor{myblue}{rgb}{0.01,0.61,0.98}
+
+\lstset{ %
+  backgroundcolor=\color{mywhite},
+  basicstyle=\footnotesize,
+  breakatwhitespace=false,
+  breaklines=true,
+  captionpos=b,
+  commentstyle=\color{mygray},
+  deletekeywords={...},
+  escapeinside={\%*}{*)},
+  extendedchars=true,
+  frame=none,
+  keepspaces=true,
+  keywordstyle=\color{myorange},
+  language=Octave,
+  morekeywords={*,...},
+  %numbers=left,
+  numbersep=5pt,
+  numberstyle=\tiny\color{mygray},
+  rulecolor=\color{black},
+  rulesepcolor=\color{myblue},
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+  stepnumber=2,
+  stringstyle=\color{myorange},
+  tabsize=2,
+  title=\lstname
+}
+\lstset{literate=% Cambios a s\'{\i}mbolos internos a los listings
+    {*a*}{{\'{a}}}1
+    {*e*}{{\'{e}}}1
+    {*i*}{{\'{\i}}}1
+    {*o*}{{\'{o}}}1
+    {*u*}{{\'{u}}}1
+    {*A*}{{\'{A}}}1
+    {*E*}{{\'{E}}}1
+    {*I*}{{\'{I}}}1
+    {*O*}{{\'{O}}}1
+    {*U*}{{\'{U}}}1
+    {*n*}{{\~{n}}}1
+    {*N*}{{\~{N}}}1
+}
+\newtheorem {rem} {Consejo}
+\newcommand {\nn}{\nonumber}
+\newcommand{\setX}{\mathcal{X}}
+\newcommand{\setU}{\mathcal{U}}
+\newcommand{\setZ}{\mathcal{Z}}
+\newcommand{\setV}{\mathcal{V}}
+\newcommand{\setS}{\mathcal{S}}
+\newcommand{\setR}{\mathcal{R}}
+\newcommand{\setQ}{\mathcal{Q}}
+\newcommand{\setO}{\mathcal{O}}
+\newcommand{\setT}{\mathcal{T}}
+\newcommand{\setW}{\mathcal{W}}
+\newcommand{\setM}{\mathcal{M}}
+\newcommand{\setm}{\mathcal{m}}
+\newcommand{\setB}{\mathcal{B}}
+\newcommand{\setC}{\mathcal{C}}
+\newcommand{\setD}{\mathcal{D}}
+\newcommand{\setY}{\mathcal{Y}}
+\newcommand{\setA}{\mathcal{A}}
+\newcommand{\setL}{\mathcal{L}}
+\newcommand{\setH}{\mathcal{H}}
+\newcommand{\equal}{\buildrel \Delta \over =}
+\def\R{ {\rm \,I\!R} }
+\def\F{ {\rm \,I\!F} }
+\def\N{ {\rm \,I\!N} }
+\def\C{ {\rm \,I\!\!\!C} }
+\newcommand{\vx} {\mathbf{x}}
+\newcommand{\vu} {\mathbf{u}}
+\newcommand{\vw} {\mathbf{w}}
+\newcommand{\x} {\mathrm{x}}
+\newcommand{\us} {\mathrm{u}}
+%\newcommand{\z} {\mathrm{z}}
+\newcommand{\bx}{\bar x}
+\newcommand{\bu}{\bar u}
+\newcommand{\bz}{\bar z}
+\newcommand{\by}{\bar y}
+\newcommand{\bK}{\bar K}
+\newcommand{\tx}{\tilde x}
+\newcommand{\tu}{\tilde u}
+\newcommand{\tz}{\tilde z}
+\newcommand{\ty}{\tilde y}
+\newcommand{\hx}{\hat x}
+\newcommand{\hu}{\hat u}
+\newcommand{\hz}{\hat z}
+\newcommand{\hy}{\hat y}
+\newcommand{\hw}{\hat w}
+\newcommand {\Nw} {{N_{\setW}}}
+\newcommand {\z}{\begin{bmatrix} x \\ u \\ \end{bmatrix}}
+\newtheorem{proposition}{Proposition}
+\hyphenation{SER-VO-ME-CA-NIS-MO sa-tu-ra-cio-nes pa-ra-me-tros va-lo-res si-guien-te}
+
+\begin{document}
+
+\pagestyle{empty}
+\include{portada}
+%\cleardoublepage
+
+\setcounter{secnumdepth}{3}
+%
+\setcounter{tocdepth}{3}
+%
+\pagenumbering{roman}
+%
+
+%
+\tableofcontents
+
+%\chapter[short title name]{long title name}
+%\cleardoublepage
+%
+%\addcontentsline{toc}{chapter}{List of figures}
+%\listoffigures 
+%\cleardoublepage
+%
+
+\pagenumbering{arabic} \setcounter{page}{1}
+
+
+%\addcontentsline{toc}{chapter}{Notation}
+%\include{Notation}
+%\cleardoublepage
+
+\pagestyle{headings}
+\include{Cap0_Puesta_en_Marcha.tex}
+\clearpage
+
+\include{Cap2_Configuracion}
+\clearpage
+
+\include{Cap1_IDE.tex}
+\clearpage
+
+
+
+%\include{Cap3_MPCT}
+%\clearpage
+
+%\include{Cap4_OFFCAN}
+%\clearpage
+
+%\include{Cap5_RMPC}
+%\clearpage
+
+\end{document}
+
+
+
+
+
