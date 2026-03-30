@@ -37,6 +37,6 @@ This board implements the I2C-based interface layer of the IoT aquaculture devic
 
 - Originally designed for the Acuacol project, but intended as a reusable module within a broader monitoring platform.
 
-- Analog sensors (pH, EC, O₂) require **proper signal conditioning and galvanic isolation**, which is implemented externally through dedicated analog front-end modules.
+- Analog sensors (pH, EC, O₂) require **galvanic isolation**, which is implemented externally through dedicated analog front-end modules.
 
 - Communication with the main controller is exclusively performed via the I2C bus.
